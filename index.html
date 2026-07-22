@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>A Special Invitation for Ruby 🌹</title>
+  <style>
+    :root {
+      --bg-color: #2D0B1E;
+      --card-bg: #3D122B;
+      --accent-gold: #E5C158;
+      --accent-gold-hover: #F3D270;
+      --text-light: #FAFAFA;
+      --text-muted: #D1B3C4;
+      --danger: #E65D6F;
+      --border-color: rgba(229, 193, 88, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 28px 20px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+      position: relative;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      animation: fadeIn 0.3s ease-in-out forwards;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1, h2, h3 {
+      color: var(--accent-gold);
+      text-align: center;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+
+    /* Envelope Screen */
+    .envelope-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .envelope-icon {
+      font-size: 72px;
+      margin-bottom: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .envelope-box:hover .envelope-icon {
+      transform: scale(1.1);
+    }
+
+    /* Form Controls & Buttons */
+    .btn-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .btn-grid-slots {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .btn {
+      background: rgba(229, 193, 88, 0.1);
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn:active, .btn.selected {
+      background: var(--accent-gold);
+      color: var(--bg-color);
+    }
+
+    .btn-primary {
+      background: var(--accent-gold);
+      color: var(--bg-color);
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-gold-hover);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--text-muted);
+      color: var(--text-muted);
+    }
+
+    /* Dodge Button Stage */
+    .dodge-stage {
+      position: relative;
+      height: 180px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    #noBtn {
+      position: absolute;
+      transition: all 0.15s ease-out;
+      background: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+    }
+
+    /* Inputs & Controls */
+    input[type="text"], input[type="date"], textarea, select {
+      width: 100%;
+      padding: 14px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent-gold);
+    }
+
+    /* Checkbox list */
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent-gold);
+      cursor: pointer;
+    }
+
+    /* Navigation Bar */
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-bar .btn {
+      flex: 1;
+      margin: 0 4px;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+      border: 1px dashed var(--border-color);
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .summary-label {
+      color: var(--text-muted);
+    }
+
+    .summary-val {
+      color: var(--accent-gold);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--accent-gold);
+      border-radius: 20px;
+      padding: 24px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .modal-content textarea {
+      font-size: 0.85rem;
+      height: 220px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ENVELOPE SCREEN -->
+  <div class="screen active" id="screen-envelope">
+    <div class="envelope-box" onclick="goToScreen('screen-question')">
+      <div class="envelope-icon">💌</div>
+      <h2>For Ruby 🌹</h2>
+      <p class="subtitle">(Tap to open)</p>
+    </div>
+  </div>
+
+  <!-- THE BIG QUESTION -->
+  <div class="screen" id="screen-question">
+    <h1 style="margin-top: 20px;">Ruby...</h1>
+    <p class="subtitle" style="font-size: 1.25rem; color: #fff;">Will you go on a date with me?</p>
+    
+    <div class="dodge-stage">
+      <button class="btn btn-primary" style="width: 140px; font-size: 1.2rem;" onclick="goToScreen('screen-style')">Yes, only because you refuse to give up 🌹</button>
+      <button class="btn" id="noBtn" onmouseover="dodgeNo()" onclick="dodgeNo()">No</button>
+    </div>
+  </div>
+
+  <!-- STEP 1: STYLE -->
+  <div class="screen" id="screen-style">
+    <h2>Step 1: Choose the Style 👗</h2>
+    <p class="subtitle">What kind of date setting are you feeling?</p>
+    <div class="btn-grid">
+      <button class="btn" onclick="selectOption('style', 'Daytime Casual', this)">☀️ Daytime Casual</button>
+      <button class="btn" onclick="selectOption('style', 'Night Out', this)">🌙 Night Out</button>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-question')">Back</button>
+      <button class="btn btn-primary" onclick="nextStep('screen-style', 'screen-vibe', 'style')">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: VIBE -->
+  <div class="screen" id="screen-vibe">
+    <h2>Step 2: What's Your Vibe? ✨</h2>
+    <p class="subtitle">Pick an energy for the hangout</p>
+    <div class="btn-grid">
+      <button class="btn" onclick="selectOption('vibe', 'Active & Fun', this)">⚡ Active & Fun</button>
+      <button class="btn" onclick="selectOption('vibe', 'Chill & Casual', this)">☕ Chill & Casual</button>
+      <button class="btn" onclick="selectOption('vibe', 'Night Out', this)">🍸 Night Out</button>
+      <button class="btn" onclick="selectOption('vibe', 'Wildcards', this)">🎲 Wildcard</button>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-style')">Back</button>
+      <button class="btn btn-primary" onclick="if(selections.vibe){ loadActivities(); goToScreen('screen-activity'); } else { alert('Please choose an option to continue! 😊'); }">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: ACTIVITY -->
+  <div class="screen" id="screen-activity">
+    <h2>Step 3: Pick an Activity 🎯</h2>
+    <p class="subtitle">Choose what we should do</p>
+    <div class="btn-grid" id="activity-options">
+      <!-- Dynamically filled -->
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-vibe')">Back</button>
+      <button class="btn btn-primary" onclick="nextStep('screen-activity', 'screen-availability', 'activity')">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: AVAILABILITY -->
+  <div class="screen" id="screen-availability">
+    <h2>Step 4: Availability 📅</h2>
+    <p class="subtitle">When are you free to go?</p>
+    
+    <label style="color: var(--text-muted); font-size: 0.85rem; display: block; margin-bottom: 6px;">Pick a Date:</label>
+    <input type="date" id="dateInput" />
+
+    <label style="color: var(--text-muted); font-size: 0.85rem; display: block; margin-bottom: 6px;">Select a Time Window:</label>
+    <div class="btn-grid">
+      <button class="btn" onclick="selectOption('timeWindow', 'Morning', this)">🌅 Morning</button>
+      <button class="btn" onclick="selectOption('timeWindow', 'Afternoon', this)">☀️ Afternoon</button>
+      <button class="btn" onclick="selectOption('timeWindow', 'Evening', this)">🌙 Evening</button>
+    </div>
+
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-activity')">Back</button>
+      <button class="btn btn-primary" onclick="if(saveAvailability()){ loadSpecificTimeSlots(); goToScreen('screen-booking'); }">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 4B: MAKE A BOOKING -->
+  <div class="screen" id="screen-booking">
+    <h2>Make a Booking ⏰</h2>
+    <p class="subtitle" id="bookingSubtitle">Select your exact time</p>
+    
+    <div class="btn-grid-slots" id="time-slot-options">
+      <!-- Dynamically filled based on Morning/Afternoon/Evening -->
+    </div>
+
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-availability')">Back</button>
+      <button class="btn btn-primary" onclick="nextStep('screen-booking', 'screen-fineprint', 'specificTime')">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: PREFERENCES / FINE PRINT -->
+  <div class="screen" id="screen-fineprint">
+    <h2>Step 5: The Fine Print 📝</h2>
+    <p class="subtitle">Any preferences, food restrictions, or non-negotiables?</p>
+    
+    <textarea id="finePrintInput" placeholder="e.g. white wine ONLY, NO men under 6’1, having a European passport is also nice…"></textarea>
+
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-booking')">Back</button>
+      <button class="btn btn-primary" onclick="saveFinePrint(); goToScreen('screen-quiz1')">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: NON-NEGOTIABLES - QUIZ 1 -->
+  <div class="screen" id="screen-quiz1">
+    <h2>Non-Negotiable #1 🧠</h2>
+    <p class="subtitle">Grammar check: Pick the correct option</p>
+    <h3 style="color: #fff; margin: 20px 0;">"_____ going to marry me"</h3>
+    <div class="btn-grid">
+      <button class="btn" onclick="selectOption('quiz1', 'You\'re', this)">You're</button>
+      <button class="btn" onclick="selectOption('quiz1', 'Youre', this)">Youre</button>
+      <button class="btn" onclick="selectOption('quiz1', 'Your', this)">Your</button>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-fineprint')">Back</button>
+      <button class="btn btn-primary" onclick="nextStep('screen-quiz1', 'screen-quiz2', 'quiz1')">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: NON-NEGOTIABLES - QUIZ 2 -->
+  <div class="screen" id="screen-quiz2">
+    <h2>Non-Negotiable #2 🧠</h2>
+    <p class="subtitle">Grammar check: Pick the correct option</p>
+    <h3 style="color: #fff; margin: 20px 0;">"___ will be a second date"</h3>
+    <div class="btn-grid">
+      <button class="btn" onclick="selectOption('quiz2', 'There', this)">There</button>
+      <button class="btn" onclick="selectOption('quiz2', 'Their', this)">Their</button>
+      <button class="btn" onclick="selectOption('quiz2', 'They\'re', this)">They're</button>
+      <button class="btn" onclick="selectOption('quiz2', 'Theyre', this)">Theyre</button>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-quiz1')">Back</button>
+      <button class="btn btn-primary" onclick="nextStep('screen-quiz2', 'screen-quiz3', 'quiz2')">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: NON-NEGOTIABLES - QUIZ 3 -->
+  <div class="screen" id="screen-quiz3">
+    <h2>Non-Negotiable #3 🚨</h2>
+    <p class="subtitle">Are you in, or do you participate in any of these events?</p>
+    
+    <div class="checkbox-group">
+      <label class="checkbox-item">
+        <input type="checkbox" value="Run clubs" class="event-check">
+        <span>Run clubs 🏃</span>
+      </label>
+      <label class="checkbox-item">
+        <input type="checkbox" value="Hyrox" class="event-check">
+        <span>Hyrox 🏋️</span>
+      </label>
+      <label class="checkbox-item">
+        <input type="checkbox" value="Festivals as an excuse to take drugs" class="event-check">
+        <span>Festivals as an excuse to take drugs 💊</span>
+      </label>
+      <label class="checkbox-item">
+        <input type="checkbox" value="I have really bad music taste" class="event-check">
+        <span>I have really bad music taste 🎧</span>
+      </label>
+    </div>
+
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-quiz2')">Back</button>
+      <button class="btn btn-primary" onclick="saveQuiz3(); goToScreen('screen-quiz4')">Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: NON-NEGOTIABLES - QUIZ 4 -->
+  <div class="screen" id="screen-quiz4">
+    <h2>Non-Negotiable #4 🏫</h2>
+    <p class="subtitle">What house color were you in school?</p>
+    <div class="btn-grid">
+      <button class="btn" onclick="selectOption('houseColor', 'Red 🟥', this)">Red 🟥 </button>
+      <button class="btn" onclick="selectOption('houseColor', 'Blue 🟦', this)">Blue 🟦</button>
+      <button class="btn" onclick="selectOption('houseColor', 'Green 🟩', this)">Green 🟩</button>
+      <button class="btn" onclick="selectOption('houseColor', 'Yellow 🟨', this)">Yellow 🟨</button>
+      <button class="btn" onclick="selectOption('houseColor', 'Other', this)">Other</button>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-quiz3')">Back</button>
+      <button class="btn btn-primary" onclick="nextStep('screen-quiz4', 'screen-lockin', 'houseColor')">Finish!</button>
+    </div>
+  </div>
+
+  <!-- FINAL LOCK-IN SCREEN -->
+  <div class="screen" id="screen-lockin">
+    <h2>It's a Date! 🎉</h2>
+    <p class="subtitle">Here is what you selected, Ruby:</p>
+
+    <div class="summary-card" id="summaryCard">
+      <!-- Filled via JS -->
+    </div>
+
+    <button class="btn btn-primary" style="width: 100%; margin-bottom: 12px;" onclick="openModal()">
+      Get Message to Send Aiden 📱
+    </button>
+    
+    <p class="subtitle" style="font-size: 0.8rem; margin-top: 8px;">
+      (Note: You can redo or change your choices anytime!)
+    </p>
+
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="goToScreen('screen-quiz4')">Back</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="messageModal">
+  <div class="modal-content">
+    <h3>Send to Aiden 💬</h3>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px;">Copy this message and text it over!</p>
+    
+    <textarea id="modalText" readonly></textarea>
+    
+    <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="copyMessage()">Copy Message 📋</button>
+    <button class="btn btn-secondary" style="width: 100%; margin-top: 8px;" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+  // State Object
+  const selections = {
+    style: '',
+    vibe: '',
+    activity: '',
+    date: '',
+    timeWindow: '',
+    specificTime: '',
+    finePrint: '',
+    quiz1: '',
+    quiz2: '',
+    events: [],
+    houseColor: ''
+  };
+
+  const activityData = {
+    'Active & Fun': ['Mini Golf ⛳', 'Bowling 🎳', 'Arcade 👾', 'Escape Room 🔐'],
+    'Chill & Casual': ['Coffee & Walk ☕', 'Sweet Treat 🍦', 'Museum 🏛️', 'Bookstore 📚'],
+    'Night Out': ['Candlelight Drinks 🍸', 'Dinner 🍝', 'Comedy Club 🎙️', 'Live Music 🎷'],
+    'Wildcards': ['Let me plan it entirely! 🎁', 'Your choice, Aiden 🫡']
+  };
+
+  const timeSlots = {
+    'Morning': ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
+    'Afternoon': ['12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM'],
+    'Evening': ['6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM']
+  };
+
+  function goToScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    
+    if (screenId === 'screen-lockin') {
+      renderSummary();
+    }
+  }
+
+  function selectOption(key, val, el) {
+    selections[key] = val;
+    const parent = el.parentElement;
+    parent.querySelectorAll('.btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function nextStep(currentScreen, nextScreen, key) {
+    if (!selections[key]) {
+      alert("Please choose an option to continue! 😊");
+      return;
+    }
+    goToScreen(nextScreen);
+  }
+
+  function dodgeNo() {
+    const btn = document.getElementById('noBtn');
+    const x = Math.floor(Math.random() * 180) - 90;
+    const y = Math.floor(Math.random() * 100) - 50;
+    btn.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  function loadActivities() {
+    const container = document.getElementById('activity-options');
+    container.innerHTML = '';
+    const currentVibe = selections.vibe || 'Chill & Casual';
+    const options = activityData[currentVibe] || activityData['Chill & Casual'];
+
+    options.forEach(act => {
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.innerText = act;
+      btn.onclick = () => selectOption('activity', act, btn);
+      container.appendChild(btn);
+    });
+  }
+
+  function saveAvailability() {
+    const dateVal = document.getElementById('dateInput').value;
+    if (!dateVal || !selections.timeWindow) {
+      alert("Please pick both a date and a time window! 📅");
+      return false;
+    }
+    selections.date = dateVal;
+    return true;
+  }
+
+  function loadSpecificTimeSlots() {
+    const container = document.getElementById('time-slot-options');
+    container.innerHTML = '';
+    
+    const windowType = selections.timeWindow || 'Evening';
+    document.getElementById('bookingSubtitle').innerText = `Pick a ${windowType.toLowerCase()} time slot for ${selections.date}`;
+    
+    const slots = timeSlots[windowType] || timeSlots['Evening'];
+    selections.specificTime = '';
+
+    slots.forEach(slot => {
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.innerText = slot;
+      btn.onclick = () => selectOption('specificTime', slot, btn);
+      container.appendChild(btn);
+    });
+  }
+
+  function saveFinePrint() {
+    selections.finePrint = document.getElementById('finePrintInput').value || 'no special requests';
+  }
+
+  function saveQuiz3() {
+    const checkboxes = document.querySelectorAll('.event-check:checked');
+    selections.events = Array.from(checkboxes).map(c => c.value);
+    if (selections.events.length === 0) {
+      selections.events = ['clean record 😇'];
+    }
+  }
+
+  function renderSummary() {
+    const card = document.getElementById('summaryCard');
+    card.innerHTML = `
+      <div class="summary-item"><span class="summary-label">Style:</span><span class="summary-val">${selections.style}</span></div>
+      <div class="summary-item"><span class="summary-label">Vibe:</span><span class="summary-val">${selections.vibe}</span></div>
+      <div class="summary-item"><span class="summary-label">Activity:</span><span class="summary-val">${selections.activity}</span></div>
+      <div class="summary-item"><span class="summary-label">Date:</span><span class="summary-val">${selections.date}</span></div>
+      <div class="summary-item"><span class="summary-label">Time:</span><span class="summary-val">${selections.specificTime} (${selections.timeWindow})</span></div>
+      <div class="summary-item"><span class="summary-label">Grammar Check:</span><span class="summary-val">${selections.quiz1 === "You're" && selections.quiz2 === "There" ? '100% Passed 💯' : 'Flunked 😅'}</span></div>
+      <div class="summary-item"><span class="summary-label">House Color:</span><span class="summary-val">${selections.houseColor}</span></div>
+    `;
+  }
+
+  function openModal() {
+    const finePrintText = selections.finePrint.toLowerCase() === 'none' ? 'no special requests' : selections.finePrint;
+    const eventsText = selections.events.join(', ');
+
+    const text = `Hey Aiden,
+
+I’m really, really, really, really, REALLY excited to go on a date with you. I can already tell you're super smart, funny, thoughtful, and genuinely amazing!
+
+I’ve also heard you’re tall, tanned, and have long-ish curly hair, which is... should we just get married?
+
+Sorry, I got a little distracted.
+
+Anyway, I filled out your date invite 🌹
+
+I'm feeling a ${selections.style.toLowerCase()} vibe with a ${selections.vibe.toLowerCase()} energy—so ${selections.activity} sounds perfect! I booked us in for ${selections.date} at ${selections.specificTime} (${selections.timeWindow.toLowerCase()}). 
+
+For the fine print, I have ${finePrintText}. Also, in case you were wondering: I was in ${selections.houseColor} house, passed your grammar test using "${selections.quiz1}" & "${selections.quiz2}", and my red flags are: ${eventsText}.
+
+See you then! 
+
+Your future girlfriend, fiancé and wife, Ruby M✨`;
+    
+    document.getElementById('modalText').value = text;
+    document.getElementById('messageModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('messageModal').style.display = 'none';
+  }
+
+  function copyMessage() {
+    const textarea = document.getElementById('modalText');
+    textarea.select();
+    textarea.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(textarea.value).then(() => {
+      alert("Message copied to clipboard! Text it over to Aiden 📱");
+    });
+  }
+</script>
+</body>
+</html>
